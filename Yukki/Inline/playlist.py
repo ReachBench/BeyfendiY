@@ -213,7 +213,11 @@ def paste_queue_markup(url):
             InlineKeyboardButton(text="⏭️", callback_data=f"skipcb"),
             InlineKeyboardButton(text="⏹️", callback_data=f"stopcb"),
         ],
-        [InlineKeyboardButton(text="Akış Sırasına Alınmış Oynatma Listesi ", url=f"{url}")],
+        [
+            InlineKeyboardButton(
+                text="Akış Sırasına Alınmış Oynatma Listesi ", url=f"{url}"
+            )
+        ],
         [InlineKeyboardButton(text="🗑 Menüyü Kapat", callback_data=f"close")],
     ]
     return buttons
