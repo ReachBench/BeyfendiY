@@ -17,7 +17,7 @@ async def unban_assistant_(_, CallbackQuery):
     a = await app.get_chat_member(CallbackQuery.message.chat.id, BOT_ID)
     if not a.can_restrict_members:
         return await CallbackQuery.answer(
-            "I am not having ban/unban user permission. Ask any admin to unban the assistant.",
+            "Kullanıcıları Yasaklama/Yasağı kaldırma yetkim yok. \nHerhangi bir yöneticiden asistanın yasağını kaldırmasını isteyin. ",
             show_alert=True,
         )
     else:
@@ -25,11 +25,11 @@ async def unban_assistant_(_, CallbackQuery):
             await app.unban_chat_member(CallbackQuery.message.chat.id, user_id)
         except:
             return await CallbackQuery.answer(
-                "Failed to unban",
+                "Yasak kaldırılamadı.",
                 show_alert=True,
             )
         return await CallbackQuery.edit_message_text(
-            "Assistant Unbanned. Try Playing Now."
+             "Asistanın Yasağı Kaldırıldı. Şimdi Oynatmayı Deneyin."
         )
 
 
@@ -57,7 +57,7 @@ def AssistantAdd(mystic):
                 [
                     [
                         InlineKeyboardButton(
-                            text="🗑 Unban Assistant",
+                            text="🗑 Asistan Yasağını Kaldır",
                             callback_data=f"unban_assistant a|{ASS_ID}",
                         )
                     ],
@@ -65,12 +65,12 @@ def AssistantAdd(mystic):
             )
             if b.status == "kicked":
                 return await message.reply_text(
-                    f"Assistant Account[{ASS_ID}] is banned.\nUnban it first to use Music Bot\n\nUsername: @{ASS_USERNAME}",
+                    f"Asistan Hesabı[{ASS_ID}] Tekmelendi. \nMüzik Botunu kullanmaya Devam Etmek İçin Asistanı Gruba Geri Alabilirsiniz. \n\nAsistan Kullanıcı Adı: @{ASS_USERNAME}",
                     reply_markup=key,
                 )
             if b.status == "banned":
                 return await message.reply_text(
-                    f"Assistant Account[{ASS_ID}] is banned.\nUnban it first to use Music Bot\n\nUsername: @{ASS_USERNAME}",
+                    f"Asistan Hesabı[{ASS_ID}] Yasaklandı.\nMüzik Botunu kullanmaya Devam Etmek İçin Asistan Hesabın Yasağını Kaldırınız. \n\nAsistan Kullanıcı Adı: @{ASS_USERNAME}",
                     reply_markup=key,
                 )
         except UserNotParticipant:
@@ -81,7 +81,7 @@ def AssistantAdd(mystic):
                     pass
                 except Exception as e:
                     await message.reply_text(
-                        f"__Assistant Failed To Join__\n\n**Reason**: {e}"
+                        f"__Asistan Katılamadı__\n\n**Sebep**: {e}"
                     )
                     return
             else:
@@ -93,13 +93,13 @@ def AssistantAdd(mystic):
                         )
                     await ASS_ACC.join_chat(invitelink)
                     await message.reply(
-                        f"{ASS_NAME} Joined Successfully",
+                        f"{ASS_NAME} Başarıyla Katıldı",
                     )
                 except UserAlreadyParticipant:
                     pass
                 except Exception as e:
                     await message.reply_text(
-                        f"__Assistant Failed To Join__\n\n**Reason**: {e}"
+                        f"__Asistan Katılamadı__\n\n**Sebep**: {e}"
                     )
                     return
         return await mystic(_, message)
