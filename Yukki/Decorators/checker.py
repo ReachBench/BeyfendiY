@@ -40,7 +40,9 @@ def checkerCB(mystic):
                     show_alert=True,
                 )
         if await is_gbanned_user(CallbackQuery.from_user.id):
-            return await CallbackQuery.answer("Küresel Yasaklı Kullanıcısınız", show_alert=True)
+            return await CallbackQuery.answer(
+                "Küresel Yasaklı Kullanıcısınız", show_alert=True
+            )
         return await mystic(_, CallbackQuery)
 
     return wrapper
