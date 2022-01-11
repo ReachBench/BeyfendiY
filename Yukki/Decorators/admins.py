@@ -7,7 +7,7 @@ def AdminRightsCheck(mystic):
     async def wrapper(_, message):
         if message.sender_chat:
             return await message.reply_text(
-                "You're an __Anonymous Admin__!\nRevert back to User Account."
+                "Şu an anonim yöneticisiniz. \nLütfen anonim yetkinizi kapatınız."
             )
         is_non_admin = await is_nonadmin_chat(message.chat.id)
         if not is_non_admin:
@@ -18,7 +18,7 @@ def AdminRightsCheck(mystic):
                     _check = await get_authuser_names(message.chat.id)
                     if token not in _check:
                         return await message.reply(
-                            "You don't have the required permission to perform this action.\n\n__REQUIRES ADMIN WITH MANAGE VC RIGHTS__"
+                            "Bu eylemi gerçekleştirmek için gerekli izne sahip değilsiniz. \n\n**Sesli sohbeti yönetme yetkisine ihtiyacınız var.**"
                         )
         return await mystic(_, message)
 
@@ -29,12 +29,12 @@ def AdminActual(mystic):
     async def wrapper(_, message):
         if message.sender_chat:
             return await message.reply_text(
-                "You're an __Anonymous Admin__!\nRevert back to User Account."
+                "Şu an anonim yöneticisiniz. \nLütfen anonim yetkinizi kapatınız."
             )
         member = await app.get_chat_member(message.chat.id, message.from_user.id)
         if not member.can_manage_voice_chats:
             return await message.reply(
-                "You don't have the required permission to perform this action.\n\n__REQUIRES ADMIN WITH MANAGE VC RIGHTS__"
+                "Bu eylemi gerçekleştirmek için gerekli izne sahip değilsiniz. \n\n**Sesli sohbeti yönetme yetkisine ihtiyacınız var.**"
             )
         return await mystic(_, message)
 
@@ -54,7 +54,7 @@ def AdminRightsCheckCB(mystic):
                     _check = await get_authuser_names(CallbackQuery.from_user.id)
                     if token not in _check:
                         return await CallbackQuery.answer(
-                            "You don't have the required permission to perform this action.\nPermission: MANAGE VOICE CHATS",
+                            "Bu eylemi gerçekleştirmek için gerekli izne sahip değilsiniz. \nGereken Yetki: **Sesli sohbeti yönetme**",
                             show_alert=True,
                         )
         return await mystic(_, CallbackQuery)
@@ -69,7 +69,7 @@ def ActualAdminCB(mystic):
         )
         if not a.can_manage_voice_chats:
             return await CallbackQuery.answer(
-                "You don't have the required permission to perform this action.\nPermission: MANAGE VOICE CHATS",
+                "Bu eylemi gerçekleştirmek için gerekli izne sahip değilsiniz. \nGereken Yetki: **Sesli sohbeti yönetme**",
                 show_alert=True,
             )
         return await mystic(_, CallbackQuery)
