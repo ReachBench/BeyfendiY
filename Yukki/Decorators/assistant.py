@@ -29,7 +29,7 @@ async def unban_assistant_(_, CallbackQuery):
                 show_alert=True,
             )
         return await CallbackQuery.edit_message_text(
-             "Asistanın Yasağı Kaldırıldı. Şimdi Oynatmayı Deneyin."
+            "Asistanın Yasağı Kaldırıldı. Şimdi Oynatmayı Deneyin."
         )
 
 
