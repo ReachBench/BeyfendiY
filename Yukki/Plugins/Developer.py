@@ -16,20 +16,20 @@ from Yukki import SUDOERS, app
 
 __MODULE__ = "Broadcast"
 __HELP__ = """
-**Note:**
-Only for Sudo Users.
+**Not:**
+Yalnızca Kurucular İçindir.
 
 
-/broadcast [Message or Reply to a Message]
-- Broadcast any message to Bot's Served Chats.
+/broadcast [Mesaj Gönderme veya Bir Mesaja Cevap Verme]
+- Herhangi bir mesajı Botun bulunduğu Sohbetlerinde yayınlayın.
 
 
-/broadcast_pin [Message or Reply to a Message]
-- Broadcast any message to Bot's Served Chats with message getting Pinned in chat [Disabled Notifications].
+/broadcast_pin [Mesaj Gönderme veya Bir Mesaja Cevap Verme]
+- Herhangi bir mesajı, Botun bulunduğu Sohbetlerinde sabitlenecek şekilde yayınlayın [Tüm Üyelere Bildirme Devre Dışı].
 
 
-/broadcast_pin_loud [Message or Reply to a Message]
-- Broadcast any message to Bot's Served Chats with message getting Pinned in chat [Enabled Notifications].
+/broadcast_pin_loud [Mesaj Gönderme veya Bir Mesaja Cevap Verme]
+- Herhangi bir mesajı, Botun bulunduğu Sohbetlerinde sabitlenecek şekilde yayınlayın [Tüm Üyelere Bildirme Etkin].
 """
 
 
@@ -56,7 +56,7 @@ async def edit_or_reply(msg: Message, **kwargs):
 async def executor(client, message):
     if len(message.command) < 2:
         return await edit_or_reply(
-            message, text="__Nigga Give me some command to execute.__"
+            message, text="__Bana Yürütmem İçin Döküman Ver.__"
         )
     try:
         cmd = message.text.split(" ", maxsplit=1)[1]
@@ -85,7 +85,7 @@ async def executor(client, message):
         evaluation = stdout
     else:
         evaluation = "Success"
-    final_output = f"**OUTPUT**:\n```{evaluation.strip()}```"
+    final_output = f"**Çıktı**:\n```{evaluation.strip()}```"
     if len(final_output) > 4096:
         filename = "output.txt"
         with open(filename, "w+", encoding="utf8") as out_file:
@@ -96,7 +96,7 @@ async def executor(client, message):
         )
         await message.reply_document(
             document=filename,
-            caption=f"**INPUT:**\n`{cmd[0:980]}`\n\n**OUTPUT:**\n`Attached Document`",
+            caption=f"**Girdi:**\n`{cmd[0:980]}`\n\n**Çıktı:**\n`Ekli Belge`",
             quote=False,
             reply_markup=keyboard,
         )
@@ -135,7 +135,7 @@ async def runtime_func_cq(_, cq):
 )
 async def shellrunner(client, message):
     if len(message.command) < 2:
-        return await edit_or_reply(message, text="**Usage:**\n/sh git pull")
+        return await edit_or_reply(message, text="**Kullanım:** \n/sh git çekme")
     text = message.text.split(None, 1)[1]
     if "\n" in text:
         code = text.split("\n")
@@ -150,7 +150,7 @@ async def shellrunner(client, message):
                 )
             except Exception as err:
                 print(err)
-                await edit_or_reply(message, text=f"**ERROR:**\n```{err}```")
+                await edit_or_reply(message, text=f"**Hata:**\n```{err}```")
             output += f"**{code}**\n"
             output += process.stdout.read()[:-1].decode("utf-8")
             output += "\n"
@@ -173,7 +173,7 @@ async def shellrunner(client, message):
                 tb=exc_tb,
             )
             return await edit_or_reply(
-                message, text=f"**ERROR:**\n```{''.join(errors)}```"
+                message, text=f"**Hata:**\n```{''.join(errors)}```"
             )
         output = process.stdout.read()[:-1].decode("utf-8")
     if str(output) == "\n":
@@ -189,6 +189,6 @@ async def shellrunner(client, message):
                 caption="`Output`",
             )
             return os.remove("output.txt")
-        await edit_or_reply(message, text=f"**OUTPUT:**\n```{output}```")
+        await edit_or_reply(message, text=f"**Çıktı:**\n```{output}```")
     else:
-        await edit_or_reply(message, text="**OUTPUT: **\n`No output`")
+        await edit_or_reply(message, text="**Çıktı: **\n`Çıktı Yok`")
