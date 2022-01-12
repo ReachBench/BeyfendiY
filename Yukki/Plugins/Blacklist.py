@@ -4,57 +4,57 @@ from pyrogram.types import Message
 from Yukki import SUDOERS, app
 from Yukki.Database import blacklist_chat, blacklisted_chats, whitelist_chat
 
-__MODULE__ = "Blacklist"
+__MODULE__ = "Kara Liste"
 __HELP__ = """
 
 
-/blacklistedchat 
-- Check Blacklisted Chats of Bot.
+/karalistedekigruplar
+- Bot'un Kara Listeye Alınmış Sohbetlerini Kontrol Edin.
 
 
-**Note:**
-Only for Sudo Users.
+**Not:**
+Sadece Kurucular İçin.
 
 
-/blacklistchat [CHAT_ID] 
-- Blacklist any chat from using Music Bot
+/karalisteyeal [Grup ID] 
+- Müzik Botunu kullanarak herhangi bir sohbeti kara listeye alın
 
 
-/whitelistchat [CHAT_ID] 
-- Whitelist any blacklisted chat from using Music Bot
+/beyazlisteyeal [Grup ID] 
+- Müzik Botunu kullanarak kara listeye alınmış herhangi bir sohbeti beyaz listeye alın
 
 """
 
 
-@app.on_message(filters.command("blacklistchat") & filters.user(SUDOERS))
+@app.on_message(filters.command("karalisteyeal") & filters.user(SUDOERS))
 async def blacklist_chat_func(_, message: Message):
     if len(message.command) != 2:
-        return await message.reply_text("**Usage:**\n/blacklistchat [CHAT_ID]")
+        return await message.reply_text("**Kullanım:**\n/karalisteyeal [Grup ID]")
     chat_id = int(message.text.strip().split()[1])
     if chat_id in await blacklisted_chats():
-        return await message.reply_text("Chat is already blacklisted.")
+        return await message.reply_text("Grup zaten kara listede.")
     blacklisted = await blacklist_chat(chat_id)
     if blacklisted:
-        return await message.reply_text("Chat has been successfully blacklisted")
-    await message.reply_text("Something wrong happened, check logs.")
+        return await message.reply_text("Grup Başarıyla Kara Listeye Alındı")
+    await message.reply_text("Yanlış bir şey oldu, log'u kontrol edin.")
 
 
-@app.on_message(filters.command("whitelistchat") & filters.user(SUDOERS))
+@app.on_message(filters.command("beyazlisteyeal") & filters.user(SUDOERS))
 async def whitelist_chat_func(_, message: Message):
     if len(message.command) != 2:
-        return await message.reply_text("**Usage:**\n/whitelistchat [CHAT_ID]")
+        return await message.reply_text("**Kullanım:**\n/beyazlisteyeal [Grup ID]")
     chat_id = int(message.text.strip().split()[1])
     if chat_id not in await blacklisted_chats():
-        return await message.reply_text("Chat is already whitelisted.")
+        return await message.reply_text("Grup zaten beyaz listede.")
     whitelisted = await whitelist_chat(chat_id)
     if whitelisted:
-        return await message.reply_text("Chat has been successfully whitelisted")
-    await message.reply_text("Something wrong happened, check logs.")
+        return await message.reply_text("Grup Başarıyla Beyaz Listeye Alındı")
+    await message.reply_text("Yanlış bir şey oldu, Log'u kontrol edin.")
 
 
-@app.on_message(filters.command("blacklistedchat"))
+@app.on_message(filters.command("karalistedekigruplar"))
 async def blacklisted_chats_func(_, message: Message):
-    text = "**Blacklisted Chats:**\n\n"
+    text = "**Kara Listedeki Gruplar:**\n\n"
     j = 0
     for count, chat_id in enumerate(await blacklisted_chats(), 1):
         try:
@@ -64,6 +64,6 @@ async def blacklisted_chats_func(_, message: Message):
         j = 1
         text += f"**{count}. {title}** [`{chat_id}`]\n"
     if j == 0:
-        await message.reply_text("No Blacklisted Chats")
+        await message.reply_text("Kara Listeye Alınmış Grup Yok")
     else:
         await message.reply_text(text)
