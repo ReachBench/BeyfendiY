@@ -41,57 +41,57 @@ __MODULE__ = "Voice Chat"
 __HELP__ = """
 
 
-/pause
-- Pause the playing music on voice chat.
+/durdur
+- Sesli sohbette çalan müziği duraklatın.
 
-/resume
-- Resume the paused music on voice chat.
+/devam
+- Sesli sohbette duraklatılmış müziği devam ettirin.
 
-/skip
-- Skip the current playing music on voice chat
+/atla
+- Sesli sohbette çalmakta olan müziği atla.
 
-/end or /stop
-- Stop the playout.
+/bitir veya /stop
+- Akışı durdurun.
 
-/queue
-- Check queue list.
+/sıra
+- Sıra listesini kontrol edin.
 
 
-**Note:**
-Only for Sudo Users
+**Not:**
+Yalnızca Kurucular için
 
-/activevc
-- Check active voice chats on bot.
+/aktifses
+- Botta aktif sesli sohbetleri kontrol edin.
 
-/activevideo
-- Check active video calls on bot.
+/aktifvideo
+- Botta aktif görüntülü aramaları kontrol edin.
 """
 
 
 @app.on_message(
-    filters.command(["pause", "skip", "resume", "stop", "end"]) & filters.group
+    filters.command(["durdur", "atla", "devam", "stop", "bitir"]) & filters.group
 )
 @AdminRightsCheck
 @checker
 async def admins(_, message: Message):
     global get_queue
     if not len(message.command) == 1:
-        return await message.reply_text("Error! Wrong Usage of Command.")
+        return await message.reply_text("Hata! Komutun Yanlış Kullanımı.")
     if not await is_active_chat(message.chat.id):
-        return await message.reply_text("Nothing is playing on voice chat.")
+        return await message.reply_text("Sesli sohbette hiçbir şey oynatılmıyor.")
     chat_id = message.chat.id
     if message.command[0][1] == "a":
         if not await is_music_playing(message.chat.id):
-            return await message.reply_text("Music is already Paused.")
+            return await message.reply_text("Müzik zaten Duraklatıldı.")
         await music_off(chat_id)
         await pause_stream(chat_id)
-        await message.reply_text(f"🎧 Voicechat Paused by {message.from_user.mention}!")
+        await message.reply_text(f"🎧 Sesli sohbet {message.from_user.mention} tarafından duraklatıldı!")
     if message.command[0][1] == "e":
         if await is_music_playing(message.chat.id):
-            return await message.reply_text("Music is already Playing.")
+            return await message.reply_text("Müzik zaten Çalıyor.")
         await music_on(chat_id)
         await resume_stream(chat_id)
-        await message.reply_text(f"🎧 Voicechat Resumed by {message.from_user.mention}!")
+        await message.reply_text(f"🎧 Sesli sohbet {message.from_user.mention} tarafından devam ettirildi!")
     if message.command[0][1] == "t" or message.command[0][1] == "n":
         if message.chat.id not in db_mem:
             db_mem[message.chat.id] = {}
@@ -105,7 +105,7 @@ async def admins(_, message: Message):
         await remove_active_video_chat(chat_id)
         await stop_stream(chat_id)
         await message.reply_text(
-            f"🎧 Voicechat End/Stopped by {message.from_user.mention}!"
+            f"🎧 Sesli sohbet {message.from_user.mention} tarafından bitirildi!"
         )
     if message.command[0][1] == "k":
         if message.chat.id not in db_mem:
@@ -117,7 +117,7 @@ async def admins(_, message: Message):
             await remove_active_chat(chat_id)
             await remove_active_video_chat(chat_id)
             await message.reply_text(
-                "No more music in __Queue__ \n\nLeaving Voice Chat"
+               "**Kuyrukta artık müzik yok.** \n\n**Sesli Sohbetten Çıkılıyor**"
             )
             await stop_stream(chat_id)
             return
@@ -162,7 +162,7 @@ async def admins(_, message: Message):
                 final_output = await message.reply_photo(
                     photo=thumb,
                     reply_markup=InlineKeyboardMarkup(buttons),
-                    caption=f"<b>__Skipped Voice Chat__</b>\n\n🎥<b>__Started Playing:__</b> {title} \n⏳<b>__Duration:__</b> {duration_min} \n👤<b>__Requested by:__ </b> {mention}",
+                    caption=f"**Parça Atlandı**\n\n🎥 **Oynamaya başlayan parça**: {title} \n⏳ **Süre**: {duration_min} \n👤 **Talep Eden**: {mention}",
                 )
                 await start_timer(
                     videoid,
@@ -175,7 +175,7 @@ async def admins(_, message: Message):
                 )
             elif str(finxx) == "s1s":
                 mystic = await message.reply_text(
-                    "Skipped.. Changing to next Video Stream."
+                    "Atlandı.. Sonraki Video Akışına geçiliyor."
                 )
                 afk = videoid
                 read = (str(videoid)).replace("s1s_", "", 1)
@@ -187,7 +187,7 @@ async def admins(_, message: Message):
                         await skip_video_stream(chat_id, videoid, 720, mystic)
                     except Exception as e:
                         return await mystic.edit(
-                            f"Error while changing video stream.\n\nPossible Reason:- {e}"
+                            f"Video akışı değiştirilirken hata oluştu. \n\nSebep:- {e}"
                         )
                     buttons = secondary_markup2("Smex1", message.from_user.id)
                     mention = db_mem[afk]["username"]
@@ -196,7 +196,7 @@ async def admins(_, message: Message):
                         photo="Utils/Telegram.JPEG",
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=(
-                            f"<b>__Skipped Video Chat__</b>\n\n👤**__Requested by:__** {mention}"
+                            f"**Görüntülü Sohbet Atlandı** \n\n👤**Talep Eden:** {mention}"
                         ),
                     )
                     await mystic.delete()
@@ -210,13 +210,13 @@ async def admins(_, message: Message):
                     nrs, ytlink = await get_m3u8(videoid)
                     if nrs == 0:
                         return await mystic.edit(
-                            "Failed to fetch Video Formats.",
+                            "Video Biçimleri getirilemedi.",
                         )
                     try:
                         await skip_video_stream(chat_id, ytlink, quality, mystic)
                     except Exception as e:
                         return await mystic.edit(
-                            f"Error while changing video stream.\n\nPossible Reason:- {e}"
+                            f"Video akışı değiştirilirken hata oluştu. \n\nSebep:- {e}"
                         )
                     theme = await check_theme(chat_id)
                     c_title = message.chat.title
@@ -234,7 +234,7 @@ async def admins(_, message: Message):
                         photo=thumb,
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=(
-                            f"<b>__Skipped Video Chat__</b>\n\n🎥<b>__Started Video Playing:__ </b> [{title[:25]}](https://www.youtube.com/watch?v={videoid}) \n👤**__Requested by:__** {mention}"
+                            f"**Video Akışı Atlandı** \n\n🎥 **Oynatılmaya Başlanan Video**: [{title[:25]}](https://www.youtube.com/watch?v={videoid}) \n👤**Talep Eden**: {mention}"
                         ),
                     )
                     await mystic.delete()
@@ -250,7 +250,7 @@ async def admins(_, message: Message):
                     )
             else:
                 mystic = await message.reply_text(
-                    f"**{MUSIC_BOT_NAME} Playlist Function**\n\n__Downloading Next Music From Playlist....__"
+                    f"**{MUSIC_BOT_NAME} Çalma Listesi İşlevi** \n\n**Çalma Listesinden Sonraki Müzikleri İndirme...**"
                 )
                 (
                     title,
@@ -259,7 +259,7 @@ async def admins(_, message: Message):
                     thumbnail,
                 ) = get_yt_info_id(videoid)
                 await mystic.edit(
-                    f"**{MUSIC_BOT_NAME} Downloader**\n\n**Title:** {title[:50]}\n\n0% ▓▓▓▓▓▓▓▓▓▓▓▓ 100%"
+                    f"**{MUSIC_BOT_NAME} İndirici** \n\n**Başlık:** {title[:50]}\n\n0% ▓▓▓▓▓▓▓▓▓▓▓▓ 100%"
                 )
                 downloaded_file = await loop.run_in_executor(
                     None, download, videoid, mystic, title
@@ -280,7 +280,7 @@ async def admins(_, message: Message):
                     photo=thumb,
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=(
-                        f"<b>__Skipped Voice Chat__</b>\n\n🎥<b>__Started Playing:__ </b>[{title[:25]}](https://www.youtube.com/watch?v={videoid}) \n⏳<b>__Duration:__</b> {duration_min} Mins\n👤**__Requested by:__** {mention}"
+                        f"**Müzik Akışı Atlandı** \n\n🎥 **Oynatılmaya Başlanan Parça**:[{title[:25]}](https://www.youtube.com/watch?v={videoid}) \n⏳ **Süre**: {duration_min} Dakika \n👤**Talep Eden**: {mention}"
                     ),
                 )
                 os.remove(thumb)
