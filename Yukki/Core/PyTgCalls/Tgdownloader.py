@@ -31,13 +31,13 @@ async def telegram_download(message, mystic):
             completed_size = bytes(current)
             speed = bytes(speed)
             text = f"""
-**{MUSIC_BOT_NAME} Telegram Media Downloader**
+**{MUSIC_BOT_NAME} Telegram Medya İndirici**
 
-**Total FileSize:** {total_size}
-**Completed:** {completed_size}
-**Percentage:** {percentage}%
+**Toplam Dosya Boyutu:** {total_size}
+**Tamamlanan:** {completed_size}
+**Yüzde:** %{percentage}
 
-**Speed:** {speed}/s
+**Hız:** {speed}/s
 **ETA:** {eta}"""
             try:
                 await mystic.edit(text)
