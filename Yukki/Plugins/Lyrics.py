@@ -8,15 +8,14 @@ from youtubesearchpython import VideosSearch
 
 from Yukki import MUSIC_BOT_NAME, app
 
-__MODULE__ = "Lyrics"
+__MODULE__ = "Sözler"
 __HELP__ = """
 
-/Lyrics [Music Name]
-- Searches Lyrics for the particular Music on web.
+/Lyrics [Müzik İsmi]
+- Web'de belirli bir Müzik için Şarkı Sözleri arar.
 
-**Note**:
-Inline button of Lyrics has some bugs. Searches only 50% results. You can use command instead if you want lyrics for any playing music.
-
+**Not**:
+Sözler her zaman tam doğru olmayabilir! Sözlerde irili ufaklı birkaç hata olabilir bunun için özür dileriz.
 """
 
 
@@ -28,7 +27,7 @@ async def lyricssex(_, CallbackQuery):
         id, user_id = callback_request.split("|")
     except Exception as e:
         return await CallbackQuery.message.edit(
-            f"Error Occured\n**Possible reason could be**:{e}"
+            f"Hata oluştu\n**Olası hata şu olabilir**:{e}"
         )
     url = f"https://www.youtube.com/watch?v={id}"
     print(url)
@@ -38,7 +37,7 @@ async def lyricssex(_, CallbackQuery):
             title = result["title"]
     except Exception:
         return await CallbackQuery.answer(
-            "Sound not found. Youtube issues.", show_alert=True
+            "Ses bulunamadı. Youtube Kaynaklıdır!", show_alert=True
         )
     x = "OXaVabSRKQLqwpiYOn-E4Y7k3wj-TNdL5RfDPXlnXhCErbcqVvdCF-WnMR5TBctI"
     y = lyricsgenius.Genius(x)
@@ -46,20 +45,20 @@ async def lyricssex(_, CallbackQuery):
     y.verbose = False
     S = y.search_song(t, get_full_info=False)
     if S is None:
-        return await CallbackQuery.answer("Lyrics not found :p", show_alert=True)
+        return await CallbackQuery.answer("Sözler bulunamadı 🙁", show_alert=True)
     await CallbackQuery.message.delete()
     userid = CallbackQuery.from_user.id
     usr = f"[{CallbackQuery.from_user.first_name}](tg://user?id={userid})"
     xxx = f"""
-**Lyrics Search Powered By {MUSIC_BOT_NAME}**
+**Şarkı sözü {MUSIC_BOT_NAME} tarafından yüklendi**
 
-**Searched By:-** {usr}
-**Searched Song:-** __{title}__
+**Talep Eden:-** {usr}
+**Aranan Şarkı:-** __{title}__
 
-**Found Lyrics For:-** __{S.title}__
-**Artist:-** {S.artist}
+**Bulunan Şarkı Sözleri:-** __{S.title}__
+**Sanatçı:-** {S.artist}
 
-**__Lyrics:__**
+**__Sözler:__**
 
 {S.lyrics}"""
     if len(xxx) > 4096:
@@ -68,7 +67,7 @@ async def lyricssex(_, CallbackQuery):
             out_file.write(str(xxx.strip()))
         await CallbackQuery.message.reply_document(
             document=filename,
-            caption=f"**OUTPUT:**\n\n`Lyrics`",
+            caption=f"**Çıktı:**\n\n`Sözler`",
             quote=False,
         )
         os.remove(filename)
@@ -79,23 +78,23 @@ async def lyricssex(_, CallbackQuery):
 @app.on_message(filters.command("lyrics"))
 async def lrsearch(_, message: Message):
     if len(message.command) < 2:
-        return await message.reply_text("**Usage:**\n\n/lyrics [ Music Name]")
-    m = await message.reply_text("Searching Lyrics")
+        return await message.reply_text("**Kullanım:**\n\n/lyrics [ Müzik İsmi]")
+    m = await message.reply_text("Sözler Aranıyor...")
     query = message.text.split(None, 1)[1]
     x = "OXaVabSRKQLqwpiYOn-E4Y7k3wj-TNdL5RfDPXlnXhCErbcqVvdCF-WnMR5TBctI"
     y = lyricsgenius.Genius(x)
     y.verbose = False
     S = y.search_song(query, get_full_info=False)
     if S is None:
-        return await m.edit("Lyrics not found :p")
+        return await m.edit("Sözler Bulunamadı 🙁")
     xxx = f"""
-**Lyrics Search Powered By {MUSIC_BOT_NAME}**
+**Şarkı sözü {MUSIC_BOT_NAME} tarafından yüklendi**
 
-**Searched Song:-** __{query}__
-**Found Lyrics For:-** __{S.title}__
-**Artist:-** {S.artist}
+**Aranan Şarkı:-** __{query}__
+**Bulunan Şarkı Sözleri:-** __{S.title}__
+**Sanatçı:-** {S.artist}
 
-**__Lyrics:__**
+**__Sözler:__**
 
 {S.lyrics}"""
     if len(xxx) > 4096:
@@ -105,7 +104,7 @@ async def lrsearch(_, message: Message):
             out_file.write(str(xxx.strip()))
         await message.reply_document(
             document=filename,
-            caption=f"**OUTPUT:**\n\n`Lyrics`",
+            caption=f"**Çıktı:**\n\n`Sözler`",
             quote=False,
         )
         os.remove(filename)
