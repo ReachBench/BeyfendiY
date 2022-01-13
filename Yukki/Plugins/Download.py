@@ -23,17 +23,17 @@ from Yukki.Utilities.download import get_formats, get_type
 user_time = {}
 flex = {}
 
-__MODULE__ = "Global Ban"
+__MODULE__ = "Küresel Yasak"
 __HELP__ = """
 
-**Note:**
-Only for Sudo Users.
+**Not:**
+Yalnızca Kurucular İçindir.
 
-/gban [Username or Reply to a user]
-- Ban a user globally in Bot's Served Chats and prevents user from using bot commands.
+/gban [Mesaj Gönderme veya Bir Mesaja Cevap Verme]
+- Bot'un Sunulan Sohbetlerinde bir kullanıcıyı global olarak yasaklar ve kullanıcının bot komutlarını kullanmasını engeller.
 
-/ungban [Username or Reply to a user]
-- Remove a user from Bot's GBan List.
+/ungban [Mesaj Gönderme veya Bir Mesaja Cevap Verme]
+- Bir kullanıcıyı Bot'un Küresel Yasaklama Listesinden çıkarın.
 """
 
 
@@ -76,11 +76,11 @@ async def ytdata(_, CallbackQuery):
 
 
 inl = InlineKeyboardMarkup(
-    [[InlineKeyboardButton(text="Downloading......", callback_data=f"down")]]
+    [[InlineKeyboardButton(text="İndiriliyor...", callback_data=f"down")]]
 )
 
 upl = InlineKeyboardMarkup(
-    [[InlineKeyboardButton(text="Uploading......", callback_data=f"down")]]
+    [[InlineKeyboardButton(text="Yükleniyor....", callback_data=f"down")]]
 )
 
 
@@ -88,14 +88,14 @@ def inl_mark(videoid, user_id):
     buttons = [
         [
             InlineKeyboardButton(
-                text="Download or Upload Failed......", callback_data=f"down"
+                text="İndirme veya Yükleme Başarısız...", callback_data=f"down"
             )
         ],
         [
             InlineKeyboardButton(
-                text="⬅️  Go Back", callback_data=f"good {videoid}|{user_id}"
+                text="⬅️  Geri Git", callback_data=f"good {videoid}|{user_id}"
             ),
-            InlineKeyboardButton(text="🗑 Close Menu", callback_data=f"close2"),
+            InlineKeyboardButton(text="🗑 Menüyü Kapat", callback_data=f"close2"),
         ],
     ]
     return buttons
@@ -112,7 +112,7 @@ async def boom(_, CallbackQuery):
     user_id = CallbackQuery.from_user.id
     type, format_id, videoid = callback_request.split("||")
     mystic = await CallbackQuery.edit_message_text(
-        "Download Started\n\nDownloading speed could be slow. Please hold on..",
+        "İndirme Başladı\n\nİndirme hızı düşük olabilir. Lütfen bekleyin...",
         reply_markup=inl,
     )
     yturl = f"https://www.youtube.com/watch?v={videoid}"
@@ -122,18 +122,17 @@ async def boom(_, CallbackQuery):
         duration = result["duration"]
         views = result["viewCount"]["short"]
         thumb_image_path = result["thumbnails"][0]["url"]
-        channel = channel = result["channel"]["name"]
-        fetched = f"""
-🔍**Track Downloaded**
-
-❇️**Title:** {title}
-
-⏳**Duration:** {duration} Mins
-👀**Views:** `{views}`
-🎥**Channel Name:** {channel}
-🔗**Video Link:** [Link]({yturl})
-
-⚡️ __Youtube Inline Download Powered By {MUSIC_BOT_NAME}__"""
+        fetched = f"""┏━━━━━━━━━━━━
+┠  ❇️**Başlık:**
+┃ [{title[:35]}]({yturl})
+┠ ⏳**Süre:** {duration} Dakika
+┠ 👀**İzlenme:** `{views}`
+┠━━━━━━━━━━━━
+┠ ️🤖  **{MUSIC_BOT_NAME}**
+┃    __Tarafından indirildi__
+┠ 👾     @HerTeldenSupport
+┃    __Bir Sorun Oluşursa Katılın__
+┗━━━━━━━━━━━━"""
     filext = "%(title)s.%(ext)s"
     userdir = os.path.join(os.getcwd(), "downloads", str(user_id))
     if not os.path.isdir(userdir):
@@ -232,19 +231,19 @@ async def boom(_, CallbackQuery):
             send_file(CallbackQuery, med, filename, videoid, user_id, yturl, channel)
         )
     else:
-        print("med not found")
+        print("medya bulunamadı")
 
 
 def p_mark(link, channel):
     buttons = [
-        [InlineKeyboardButton(text="Watch on Youtube", url=f"{link}")],
+        [InlineKeyboardButton(text="Youtube Üzerinden İzle", url=f"{link}")],
     ]
     return buttons
 
 
 async def send_file(CallbackQuery, med, filename, videoid, user_id, link, channel):
     await CallbackQuery.edit_message_text(
-        "Upload Started\n\nUploading speed could be slow. Please hold on..",
+        "Yükleme Başladı\n\nYükleme hızı yavaş olabilir. Lütfen bekleyin...",
         reply_markup=upl,
     )
     try:
@@ -272,7 +271,7 @@ import subprocess as sp
 
 def probe(vid_file_path):
     if type(vid_file_path) != str:
-        raise Exception("Give ffprobe a full file path of the file")
+        raise Exception("ffprobe'a dosyanın tam dosya yolunu verin")
 
     command = [
         "ffprobe",
@@ -303,7 +302,7 @@ def duration(vid_file_path):
             if "duration" in s:
                 return float(s["duration"])
 
-    raise Exception("duration Not found")
+    raise Exception("Süre Bulunamadı")
 
 
 async def downloadvideocli(command_to_exec):
