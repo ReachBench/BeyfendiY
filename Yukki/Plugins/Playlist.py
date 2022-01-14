@@ -1,49 +1,43 @@
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup
+from pyrogram.types import (InlineKeyboardButton, InlineKeyboardMarkup,
+                            KeyboardButton, Message, ReplyKeyboardMarkup,
+                            ReplyKeyboardRemove)
 
-from Yukki import MUSIC_BOT_NAME, app, db_mem
-from Yukki.Database import delete_playlist, get_playlist, get_playlist_names
+from Yukki import BOT_ID, BOT_USERNAME, MUSIC_BOT_NAME, SUDOERS, app, db_mem
+from Yukki.Database import (_get_playlists, delete_playlist, get_playlist,
+                            get_playlist_names, save_playlist)
 from Yukki.Decorators.admins import AdminRightsCheck
 from Yukki.Decorators.assistant import AssistantAdd
-from Yukki.Decorators.checker import checker
+from Yukki.Decorators.checker import checker, checkerCB
 from Yukki.Decorators.permission import PermissionCheck
-from Yukki.Inline import (
-    add_genre_markup,
-    check_genre_markup,
-    check_markup,
-    delete_playlist_markuup,
-    others_markup,
-    play_genre_playlist,
-    playlist_markup,
-    third_playlist_markup,
-)
+from Yukki.Inline import (add_genre_markup, check_genre_markup, check_markup,
+                          delete_playlist_markuup, download_markup,
+                          others_markup, play_genre_playlist, playlist_markup,
+                          third_playlist_markup)
 
-__MODULE__ = "Playlist"
+__MODULE__ = "Çalma Listesi"
 __HELP__ = """
 
-
-/playplaylist 
-- Start playing Your Saved Playlist.
-
+/oynatplaylist 
+- Kayıtlı Oynatma Listenizi oynatmaya başlayın.
 
 /playlist 
-- Check Your Saved Playlist On Servers.
-
+- Sunucularda Kaydedilmiş Oynatma Listenizi Kontrol Edin.
 
 /delmyplaylist
-- Delete any saved music in your playlist
-
+- Çalma listenizde kayıtlı tüm müzikleri silin
 
 /delgroupplaylist
-- Delete any saved music in your group's playlist [Requires Admin Rights.]
+- Grubunuzun çalma listesinde kayıtlı tüm müzikleri silin [Yönetici Hakları Gerektirir.]
+
 """
 
 
-@app.on_message(filters.command("playplaylist") & filters.group)
+@app.on_message(filters.command("oynatplaylist") & filters.group)
 @checker
 @PermissionCheck
 @AssistantAdd
-async def play_playlist_cmd(_, message):
+async def oynat_playlist_cmd(_, message):
     thumb = "Utils/Playlist.jpg"
     await message.delete()
     if not message.reply_to_message:
@@ -59,14 +53,14 @@ async def play_playlist_cmd(_, message):
                     third_name = user.first_name
                 except:
                     userid = user
-                    third_name = "Deleted Account"
+                    third_name = "Silinen Hesap"
             except:
                 try:
                     user = await app.get_users(user)
                     userid = user.id
                     third_name = user.first_name
-                except Exception:
-                    return await message.reply_text("User not found")
+                except Exception as e:
+                    return await message.reply_text("Kullanıcı bulunamadı")
             user_id = message.from_user.id
             user_name = message.from_user.first_name
             buttons = third_playlist_markup(
@@ -75,7 +69,7 @@ async def play_playlist_cmd(_, message):
             hmo = await message.reply_photo(
                 photo=thumb,
                 caption=(
-                    f"**{MUSIC_BOT_NAME}'s Playlist Feature**\nSelect the Playlist you want to play!.\n\nYou can play someone else's playlist too:-\n- /playplaylist [Username]\n- /playplaylist [USER ID](if user has deleted acc)\n- /playplaylist [Reply to a User]"
+                    f"**{MUSIC_BOT_NAME} Oynatma Listesi Özelliği**\nOynamak istediğiniz Oynatma Listesini seçin!.\n\nBaşka birinin çalma listesini de çalabilirsiniz:-\n- /oynatplaylist [Username]\n- /oynatplaylist [USER ID](kullanıcı hesabı sildiyse)\n- /oynatplaylist [Bir Kullanıcıya Yanıt Ver]"
                 ),
                 reply_markup=InlineKeyboardMarkup(buttons),
             )
@@ -87,7 +81,7 @@ async def play_playlist_cmd(_, message):
             await message.reply_photo(
                 photo=thumb,
                 caption=(
-                    f"**{MUSIC_BOT_NAME}'s Playlist Feature**\nSelect the Playlist you want to play!.\n\nYou can play someone else's playlist too:-\n- /playplaylist [Username]\n- /playplaylist [USER ID](if user has deleted acc)\n- /playplaylist [Reply to a User]"
+                    f"**{MUSIC_BOT_NAME} Oynatma Listesi Özelliği**\nOynamak istediğiniz Oynatma Listesini seçin!.\n\nBaşka birinin çalma listesini de çalabilirsiniz:-\n- /oynatplaylist [Username]\n- /oynatplaylist [USER ID](kullanıcı hesabı sildiyse)\n- /oynatplaylist [Bir Kullanıcıya Yanıt Ver]"
                 ),
                 reply_markup=InlineKeyboardMarkup(buttons),
             )
@@ -97,11 +91,13 @@ async def play_playlist_cmd(_, message):
         third_name = message.reply_to_message.from_user.first_name
         user_id = message.from_user.id
         user_name = message.from_user.first_name
-        buttons = third_playlist_markup(user_name, user_id, third_name, userid, "abcd")
+        buttons = third_playlist_markup(
+            user_name, user_id, third_name, userid, "abcd"
+        )
         hmo = await message.reply_photo(
             photo=thumb,
             caption=(
-                f"**{MUSIC_BOT_NAME}'s Playlist Feature**\nSelect the Playlist you want to play!.\n\nYou can play someone else's playlist too:-\n- /playplaylist [Username]\n- /playplaylist [USER ID](if user has deleted acc)\n- /playplaylist [Reply to a User]"
+                f"**{MUSIC_BOT_NAME} Oynatma Listesi Özelliği**\nOynamak istediğiniz Oynatma Listesini seçin!.\n\nBaşka birinin çalma listesini de çalabilirsiniz:-\n- /oynatplaylist [USERNAME]\n- /oynatplaylist [USER ID](kullanıcı hesabı sildiyse)\n- /oynatplaylist [Bir Kullanıcıya Yanıt Ver]"
             ),
             reply_markup=InlineKeyboardMarkup(buttons),
         )
@@ -120,7 +116,7 @@ async def playlist(_, message):
     await message.reply_photo(
         photo=thumb,
         caption=(
-            f"**{MUSIC_BOT_NAME}'s Playlist Feature**\n\nSelect The Playlist, You want to **check!**"
+            f"**{MUSIC_BOT_NAME} Oynatma Listesi Özelliği**\n\nOynatma Listesini Seçin"
         ),
         reply_markup=InlineKeyboardMarkup(buttons),
     )
@@ -175,7 +171,7 @@ options_Genre = [
 
 @app.on_message(filters.command("delmyplaylist") & filters.group)
 async def del_cmd(_, message):
-    usage = f"Usage:\n\n/delmyplaylist [Genre] [Numbers between 1-30] ( to delete a particular music in playlist )\n\nor\n\n/delmyplaylist [Genre] all ( to delete whole playlist )\n\n**Genres:-**\n{' | '.join(options_Genre)}"
+    usage = f"Kullanım:\n\n/delmyplaylist [Tür] [arasındaki sayılar 1-30] ( çalma listesindeki belirli bir müziği silmek için )\n\nVeya\n\n/delmyplaylist [Tür] Tümü ( tüm çalma listesini silmek için )\n\n**türler:-**\n{' | '.join(options_Genre)}"
     if len(message.command) < 3:
         return await message.reply_text(usage)
     genre = message.text.split(None, 2)[1].strip()
@@ -189,36 +185,41 @@ async def del_cmd(_, message):
     if str(count) == "all":
         buttons = delete_playlist_markuup("Personal", genre)
         return await message.reply_text(
-            f"Confirmation!!\nYou sure you want to delete your whole {genre} playlist?",
+            f"Tümünü silmek istediğinizden emin misiniz? \nSilinecek: {genre}",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
     else:
         _playlist = await get_playlist_names(message.from_user.id, genre)
     if not _playlist:
-        await message.reply_text(f"You have no Playlist on {MUSIC_BOT_NAME}'s Server")
+        await message.reply_text(
+            f"Oynatma Listeniz {MUSIC_BOT_NAME} sunucularında yok"
+        )
     else:
+        titlex = []
         j = 0
         count = int(count)
         for note in _playlist:
             j += 1
-            await get_playlist(message.from_user.id, note, genre)
+            _note = await get_playlist(message.from_user.id, note, genre)
             if j == count:
-                deleted = await delete_playlist(message.from_user.id, note, genre)
+                deleted = await delete_playlist(
+                    message.from_user.id, note, genre
+                )
                 if deleted:
                     return await message.reply_text(
-                        f"**Deleted the {count} music in playlist**"
+                        f"**Çalma listesindeki {count} tane müzik silindi**"
                     )
                 else:
                     return await message.reply_text(
-                        f"**No such saved music in playlist.**"
+                        f"**Çalma listesinde böyle kayıtlı müzik yok.**"
                     )
-        await message.reply_text("You have no such music in Playlist.")
+        await message.reply_text("Oynatma Listesinde böyle bir müziğiniz yok.")
 
 
 @app.on_message(filters.command("delgroupplaylist") & filters.group)
 @AdminRightsCheck
 async def delgroupplaylist(_, message):
-    usage = f"Usage:\n\n/delgroupplaylist [Genre] [Numbers between 1-30] ( to delete a particular music in playlist )\n\nor\n\n /delgroupplaylist [Genre] all ( to delete whole playlist )\n\n**Genres:-**\n{' | '.join(options_Genre)}"
+    usage = f"Kullanım:\n\n/delgroupplaylist [Tür] [arasındaki sayılar 1-30] ( çalma listesindeki belirli bir müziği silmek için )\n\nVeya\n\n /delgroupplaylist [Tür] Tümü ( tüm çalma listesini silmek için )\n\n**türler:-**\n{' | '.join(options_Genre)}"
     if len(message.command) < 3:
         return await message.reply_text(usage)
     genre = message.text.split(None, 2)[1].strip()
@@ -232,30 +233,33 @@ async def delgroupplaylist(_, message):
     if str(count) == "all":
         buttons = delete_playlist_markuup("Group", genre)
         return await message.reply_text(
-            f"Confirmation!!\nYou sure you want to delete Group's whole {genre} playlist?",
+            f"Grubun çalma listelerini silmek istediğinizden emin misiniz? \nSilinecek: {genre}",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
     else:
         _playlist = await get_playlist_names(message.chat.id, genre)
     if not _playlist:
-        await message.reply_text(f"You have no Playlist on {MUSIC_BOT_NAME}'s Server")
+        await message.reply_text(
+            f"Oynatma Listeniz {MUSIC_BOT_NAME} sunucularında yok"
+        )
     else:
+        titlex = []
         j = 0
         count = int(count)
         for note in _playlist:
             j += 1
-            await get_playlist(message.chat.id, note, genre)
+            _note = await get_playlist(message.chat.id, note, genre)
             if j == count:
                 deleted = await delete_playlist(message.chat.id, note, genre)
                 if deleted:
                     return await message.reply_text(
-                        f"**Deleted the {count} music in group's playlist**"
+                        f"**Grubun çalma listesindeki {count} tane müzik silindi**"
                     )
                 else:
                     return await message.reply_text(
-                        f"**No such saved music in Group playlist.**"
+                        f"**Grup çalma listesinde böyle kayıtlı müzik yok.**"
                     )
-        await message.reply_text("You have no such music in Playlist.")
+        await message.reply_text("Oynatma Listesinde böyle bir müziğiniz yok.")
 
 
 @app.on_callback_query(filters.regex(pattern=r"show_genre"))
@@ -263,7 +267,7 @@ async def show_genre(_, CallbackQuery):
     await CallbackQuery.answer()
     callback_data = CallbackQuery.data.strip()
     callback_request = callback_data.split(None, 1)[1]
-    CallbackQuery.from_user.id
+    userid = CallbackQuery.from_user.id
     a, b, c = callback_request.split("|")
     buttons = play_genre_playlist(a, b, "abcd")
     await CallbackQuery.edit_message_reply_markup(
@@ -301,7 +305,7 @@ async def your_playlist(_, CallbackQuery):
     await CallbackQuery.answer()
     callback_data = CallbackQuery.data.strip()
     callback_request = callback_data.split(None, 1)[1]
-    CallbackQuery.from_user.id
+    userid = CallbackQuery.from_user.id
     videoid, user_id = callback_request.split("|")
     buttons = add_genre_markup(user_id, "Personal", videoid)
     await CallbackQuery.edit_message_reply_markup(
@@ -314,7 +318,7 @@ async def group_playlist(_, CallbackQuery):
     await CallbackQuery.answer()
     callback_data = CallbackQuery.data.strip()
     callback_request = callback_data.split(None, 1)[1]
-    CallbackQuery.from_user.id
+    userid = CallbackQuery.from_user.id
     videoid, user_id = callback_request.split("|")
     buttons = add_genre_markup(user_id, "Group", videoid)
     await CallbackQuery.edit_message_reply_markup(
@@ -327,7 +331,7 @@ async def otherhuvai(_, CallbackQuery):
     await CallbackQuery.answer()
     callback_data = CallbackQuery.data.strip()
     callback_request = callback_data.split(None, 1)[1]
-    CallbackQuery.from_user.id
+    userid = CallbackQuery.from_user.id
     videoid, user_id = callback_request.split("|")
     buttons = others_markup(videoid, user_id)
     db_mem[videoid]["check"] = 1
@@ -341,7 +345,7 @@ async def goback(_, CallbackQuery):
     await CallbackQuery.answer()
     callback_data = CallbackQuery.data.strip()
     callback_request = callback_data.split(None, 1)[1]
-    CallbackQuery.from_user.id
+    userid = CallbackQuery.from_user.id
     videoid, user_id = callback_request.split("|")
     buttons = others_markup(videoid, user_id)
     try:
