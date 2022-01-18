@@ -2,12 +2,7 @@ from pyrogram import filters
 from pyrogram.types import Message
 
 from Yukki import app
-from Yukki.Database import (
-    delete_authuser,
-    get_authuser,
-    get_authuser_names,
-    save_authuser,
-)
+from Yukki.Database import delete_authuser, get_authuser_names, save_authuser
 from Yukki.Decorators.admins import AdminActual
 from Yukki.Utilities.changers import int_to_alpha
 
@@ -52,7 +47,7 @@ async def yetkili(_, message: Message):
             count += 1
         if int(count) == 20:
             return await message.reply_text(
-               "Grup Yetkili Kullanıcılar Listenizde Yalnızca 20 Kullanıcınız Olabilir"
+                "Grup Yetkili Kullanıcılar Listenizde Yalnızca 20 Kullanıcınız Olabilir"
             )
         if token not in _check:
             assis = {
@@ -62,10 +57,14 @@ async def yetkili(_, message: Message):
                 "admin_name": from_user_name,
             }
             await save_authuser(message.chat.id, token, assis)
-            await message.reply_text(f"Seçtiğiniz kullanıcı bu grubun Yetkili Kullanıcılar Listesine eklendi.")
+            await message.reply_text(
+                f"Seçtiğiniz kullanıcı bu grubun Yetkili Kullanıcılar Listesine eklendi."
+            )
             return
         else:
-            await message.reply_text(f"Seçtiğiniz kullanıcı zaten Yetkili Kullanıcılar Listesinde.")
+            await message.reply_text(
+                f"Seçtiğiniz kullanıcı zaten Yetkili Kullanıcılar Listesinde."
+            )
         return
     from_user_id = message.from_user.id
     user_id = message.reply_to_message.from_user.id
@@ -88,10 +87,14 @@ async def yetkili(_, message: Message):
             "admin_name": from_user_name,
         }
         await save_authuser(message.chat.id, token, assis)
-        await message.reply_text(f"Seçtiğiniz kullanıcı bu grubun Yetkili Kullanıcılar Listesine eklendi.")
+        await message.reply_text(
+            f"Seçtiğiniz kullanıcı bu grubun Yetkili Kullanıcılar Listesine eklendi."
+        )
         return
     else:
-        await message.reply_text(f"Seçtiğiniz kullanıcı zaten Yetkili Kullanıcılar Listesinde.")
+        await message.reply_text(
+            f"Seçtiğiniz kullanıcı zaten Yetkili Kullanıcılar Listesinde."
+        )
 
 
 @app.on_message(filters.command("yetkisiz") & filters.group)

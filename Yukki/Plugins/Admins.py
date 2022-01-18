@@ -85,13 +85,17 @@ async def admins(_, message: Message):
             return await message.reply_text("Müzik zaten Duraklatıldı.")
         await music_off(chat_id)
         await pause_stream(chat_id)
-        await message.reply_text(f"🎧 Sesli sohbet {message.from_user.mention} tarafından duraklatıldı!")
+        await message.reply_text(
+            f"🎧 Sesli sohbet {message.from_user.mention} tarafından duraklatıldı!"
+        )
     if message.command[0][1] == "e":
         if await is_music_playing(message.chat.id):
             return await message.reply_text("Müzik zaten Çalıyor.")
         await music_on(chat_id)
         await resume_stream(chat_id)
-        await message.reply_text(f"🎧 Sesli sohbet {message.from_user.mention} tarafından devam ettirildi!")
+        await message.reply_text(
+            f"🎧 Sesli sohbet {message.from_user.mention} tarafından devam ettirildi!"
+        )
     if message.command[0][1] == "t" or message.command[0][1] == "n":
         if message.chat.id not in db_mem:
             db_mem[message.chat.id] = {}
@@ -117,7 +121,7 @@ async def admins(_, message: Message):
             await remove_active_chat(chat_id)
             await remove_active_video_chat(chat_id)
             await message.reply_text(
-               "**Kuyrukta artık müzik yok.** \n\n**Sesli Sohbetten Çıkılıyor**"
+                "**Kuyrukta artık müzik yok.** \n\n**Sesli Sohbetten Çıkılıyor**"
             )
             await stop_stream(chat_id)
             return

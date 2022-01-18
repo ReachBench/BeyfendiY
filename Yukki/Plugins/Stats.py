@@ -86,7 +86,9 @@ Ping: `⚡{resp} ms`
 async def stats_markup(_, CallbackQuery):
     command = CallbackQuery.matches[0].group(1)
     if command == "sys_stats":
-        await CallbackQuery.answer("Sistem İstatistikleri Alınıyor ...", show_alert=True)
+        await CallbackQuery.answer(
+            "Sistem İstatistikleri Alınıyor ...", show_alert=True
+        )
         sc = platform.system()
         arch = platform.machine()
         p_core = psutil.cpu_count(logical=False)
@@ -128,7 +130,9 @@ async def stats_markup(_, CallbackQuery):
 """
         await CallbackQuery.edit_message_text(smex, reply_markup=stats2)
     if command == "sto_stats":
-        await CallbackQuery.answer("Depolama İstatistikleri Alınıyor ...", show_alert=True)
+        await CallbackQuery.answer(
+            "Depolama İstatistikleri Alınıyor ...", show_alert=True
+        )
         hdd = psutil.disk_usage("/")
         total = hdd.total / (1024.0 ** 3)
         total = str(total)
@@ -224,7 +228,9 @@ async def stats_markup(_, CallbackQuery):
     if command == "wait_stats":
         await CallbackQuery.answer()
     if command == "assis_stats":
-        await CallbackQuery.answer("Asistan İstatistikleri Alınıyor...", show_alert=True)
+        await CallbackQuery.answer(
+            "Asistan İstatistikleri Alınıyor...", show_alert=True
+        )
         await CallbackQuery.edit_message_text(
             "Asistan Istatistikleri Alınıyor. Lütfen Bekleyiniz...", reply_markup=stats7
         )

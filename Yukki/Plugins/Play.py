@@ -56,7 +56,7 @@ async def play(_, message: Message):
         db_mem[message.chat.id] = {}
     if message.sender_chat:
         return await message.reply_text(
-           "Bu Sohbet Grubunda Anonim Yöneticisiniz! \nLütfen Anonim Yetkinizi Kapatın."
+            "Bu Sohbet Grubunda Anonim Yöneticisiniz! \nLütfen Anonim Yetkinizi Kapatın."
         )
     audio = (
         (message.reply_to_message.audio or message.reply_to_message.voice)
@@ -75,14 +75,16 @@ async def play(_, message: Message):
             read = db_mem[message.chat.id]["live_check"]
             if read:
                 return await mystic.edit(
-              "Canlı Akış Oynatılıyor... Müzik çalmak için durdurun"
+                    "Canlı Akış Oynatılıyor... Müzik çalmak için durdurun"
                 )
             else:
                 pass
         except:
             pass
         if audio.file_size > 1073741824:
-            return await mystic.edit_text("Ses dosyası boyutu 150 mb'den küçük olmalıdır")
+            return await mystic.edit_text(
+                "Ses dosyası boyutu 150 mb'den küçük olmalıdır"
+            )
         duration_min = seconds_to_min(audio.duration)
         duration_sec = audio.duration
         if (audio.duration) > DURATION_LIMIT:
@@ -125,7 +127,7 @@ async def play(_, message: Message):
                 pass
             else:
                 return await message.reply_text(
-                   "Üzgünüz! Bot, CPU Aşırı Yükü sorunları nedeniyle yalnızca sınırlı sayıda görüntülü aramaya izin verir. Diğer birçok sohbet şu anda görüntülü aramayı kullanıyor. Müzik dinlemeye geçmeyi deneyin veya daha sonra tekrar deneyin"
+                    "Üzgünüz! Bot, CPU Aşırı Yükü sorunları nedeniyle yalnızca sınırlı sayıda görüntülü aramaya izin verir. Diğer birçok sohbet şu anda görüntülü aramayı kullanıyor. Müzik dinlemeye geçmeyi deneyin veya daha sonra tekrar deneyin"
                 )
         mystic = await message.reply_text("🔄 Video İşleniyor... Lütfen Bekleyin!")
         try:
@@ -219,7 +221,7 @@ async def Music_Stream(_, CallbackQuery):
     if str(duration) == "None":
         buttons = livestream_markup("720", videoid, duration, user_id)
         return await CallbackQuery.edit_message_text(
-            "**Canlı Yayın Algılandı**\n\nCanlı yayın oynatmak mı istiyorsunuz? Bu, çalmakta olan müzikleri (varsa) durduracak ve canlı video akışını başlatacaktır.",,
+            "**Canlı Yayın Algılandı**\n\nCanlı yayın oynatmak mı istiyorsunuz? Bu, çalmakta olan müzikleri (varsa) durduracak ve canlı video akışını başlatacaktır.",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
     if CallbackQuery.from_user.id != int(user_id):
@@ -232,7 +234,7 @@ async def Music_Stream(_, CallbackQuery):
         return await CallbackQuery.message.reply_text(
             f"**Süre Snırı Aşıldı!**\n\n**Kabul Edilen Süre: **{DURATION_LIMIT_MIN} Dakika\n**Alınan Süre:** {duration_min} Dakika"
         )
-    await CallbackQuery.answer(f"Processing:- {title[:20]}", show_alert=True)
+    await CallbackQuery.answer(f"Uygulanıyor:- {title[:20]}", show_alert=True)
     mystic = await CallbackQuery.message.reply_text(
         f"**{MUSIC_BOT_NAME} İndirici**\n\n**Başlık:** {title[:50]}\n\n%0 ▓▓▓▓▓▓▓▓▓▓▓▓ %100"
     )

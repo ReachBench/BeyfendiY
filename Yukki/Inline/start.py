@@ -12,7 +12,7 @@ def setting_markup2():
         ],
         [
             InlineKeyboardButton(text="👥 Yetkili Kullanıcılar", callback_data="AU"),
-            InlineKeyboardButton(text="💻 Gösterge Paneli" callback_data="Dashboard"),
+            InlineKeyboardButton(text="💻 Gösterge Paneli", callback_data="Dashboard"),
         ],
         [
             InlineKeyboardButton(text="✖️ Kapat", callback_data="close"),
@@ -54,9 +54,7 @@ def start_pannel():
             ],
             [InlineKeyboardButton(text="🔧 Ayarlar", callback_data="settingm")],
             [
-                InlineKeyboardButton(
-                    text="📨 Support Kanal", url=f"{SUPPORT_CHANNEL}"
-                ),
+                InlineKeyboardButton(text="📨 Support Kanal", url=f"{SUPPORT_CHANNEL}"),
             ],
         ]
         return f"🎛  **Bu {MUSIC_BOT_NAME}**", buttons
@@ -69,9 +67,7 @@ def start_pannel():
             ],
             [InlineKeyboardButton(text="🔧 Ayarlar", callback_data="settingm")],
             [
-                InlineKeyboardButton(
-                    text="📨 Support Kanal", url=f"{SUPPORT_CHANNEL}"
-                ),
+                InlineKeyboardButton(text="📨 Support Kanal", url=f"{SUPPORT_CHANNEL}"),
                 InlineKeyboardButton(text="📨Support Grubu", url=f"{SUPPORT_GROUP}"),
             ],
         ]
@@ -126,9 +122,7 @@ def private_panel():
                 )
             ],
             [
-                InlineKeyboardButton(
-                    text="📨 Support Kanal", url=f"{SUPPORT_CHANNEL}"
-                ),
+                InlineKeyboardButton(text="📨 Support Kanal", url=f"{SUPPORT_CHANNEL}"),
             ],
         ]
         return f"🎛  **Bu {MUSIC_BOT_NAME}**", buttons
@@ -146,9 +140,7 @@ def private_panel():
                 )
             ],
             [
-                InlineKeyboardButton(
-                    text="📨 Support Kanal", url=f"{SUPPORT_CHANNEL}"
-                ),
+                InlineKeyboardButton(text="📨 Support Kanal", url=f"{SUPPORT_CHANNEL}"),
                 InlineKeyboardButton(text="📨Support Grubu", url=f"{SUPPORT_GROUP}"),
             ],
         ]
@@ -175,7 +167,11 @@ def setting_markup():
 
 def volmarkup():
     buttons = [
-        [InlineKeyboardButton(text="🔄 Ses Seviyesini Varsayılan Yap 🔄", callback_data="HV")],
+        [
+            InlineKeyboardButton(
+                text="🔄 Ses Seviyesini Varsayılan Yap 🔄", callback_data="HV"
+            )
+        ],
         [
             InlineKeyboardButton(text="🔈 Düşük Ses", callback_data="LV"),
             InlineKeyboardButton(text="🔉 Orta Ses", callback_data="MV"),

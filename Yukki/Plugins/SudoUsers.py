@@ -101,7 +101,9 @@ async def userdel(_, message: Message):
         user = await app.get_users(user)
         message.from_user
         if user.id not in SUDOERS:
-            return await message.reply_text(f"Kullanıcı Zaten Botun Kurucularından Değil.")
+            return await message.reply_text(
+                f"Kullanıcı Zaten Botun Kurucularından Değil."
+            )
         removed = await remove_sudo(user.id)
         if removed:
             await message.reply_text(
@@ -114,10 +116,14 @@ async def userdel(_, message: Message):
     user_id = message.reply_to_message.from_user.id
     mention = message.reply_to_message.from_user.mention
     if user_id not in SUDOERS:
-        return await message.reply_text(f"Kullanıcı {MUSIC_BOT_NAME}'nin Kurucularından Değil")
+        return await message.reply_text(
+            f"Kullanıcı {MUSIC_BOT_NAME}'nin Kurucularından Değil"
+        )
     removed = await remove_sudo(user_id)
     if removed:
-        await message.reply_text(f"Botun Kurucularından Olan **{mention}**, {MUSIC_BOT_NAME}'nin Kurucu Listesinden Silindi")
+        await message.reply_text(
+            f"Botun Kurucularından Olan **{mention}**, {MUSIC_BOT_NAME}'nin Kurucu Listesinden Silindi"
+        )
         return os.system(f"kill -9 {os.getpid()} && python3 -m Yukki")
     await message.reply_text(f"Ters Giden Bir Şeyler Oldu")
 
@@ -170,9 +176,13 @@ async def set_video_limit_kid(_, message: Message):
     try:
         limit = int(state)
     except:
-        return await message.reply_text("Limiti Ayarlamak için Lütfen Sayısal Veriler Kullanın.")
+        return await message.reply_text(
+            "Limiti Ayarlamak için Lütfen Sayısal Veriler Kullanın."
+        )
     await set_video_limit(141414, limit)
-    await message.reply_text(f"Sesli Sohbetlerdeki İzlenebilir Videoların Maksimum Sınırı, {limit} Sohbet için Tanımlandı.")
+    await message.reply_text(
+        f"Sesli Sohbetlerdeki İzlenebilir Videoların Maksimum Sınırı, {limit} Sohbet için Tanımlandı."
+    )
 
 
 ## Maintenance Yukki
@@ -232,7 +242,9 @@ async def logger(_, message):
 async def ban_globally(_, message):
     if not message.reply_to_message:
         if len(message.command) < 2:
-            await message.reply_text("**Kullanım:**\n/gban [Kullanıcı Adı | Kullanıcı ID]")
+            await message.reply_text(
+                "**Kullanım:**\n/gban [Kullanıcı Adı | Kullanıcı ID]"
+            )
             return
         user = message.text.split(None, 2)[1]
         if "@" in user:
@@ -240,11 +252,15 @@ async def ban_globally(_, message):
         user = await app.get_users(user)
         from_user = message.from_user
         if user.id == from_user.id:
-            return await message.reply_text("Kendini Küresel Olarak Yasaklayamazsın. Bu Çok Mantıksız Geliyor!")
+            return await message.reply_text(
+                "Kendini Küresel Olarak Yasaklayamazsın. Bu Çok Mantıksız Geliyor!"
+            )
         elif user.id == BOT_ID:
             await message.reply_text("Kendimi Engellememi İsteyemezsin! Bu Çok Saçma.")
         elif user.id in SUDOERS:
-            await message.reply_text("Bir Kurucuyu Yasaklamak Mı? Kulağa Saçma Geliyor!")
+            await message.reply_text(
+                "Bir Kurucuyu Yasaklamak Mı? Kulağa Saçma Geliyor!"
+            )
         else:
             await add_gban_user(user.id)
             served_chats = []
@@ -287,7 +303,9 @@ __**Yeni {MUSIC_BOT_NAME} Küresel Yasaklaması**__
     mention = message.reply_to_message.from_user.mention
     sudoers = await get_sudoers()
     if user_id == from_user_id:
-        await message.reply_text("Kendini Küresel Olarak Yasaklayamazsın. Bu Çok Mantıksız Geliyor!")
+        await message.reply_text(
+            "Kendini Küresel Olarak Yasaklayamazsın. Bu Çok Mantıksız Geliyor!"
+        )
     elif user_id == BOT_ID:
         await message.reply_text("Kendimi Engellememi İsteyemezsin! Bu Çok Saçma.")
     elif user_id in sudoers:
@@ -338,7 +356,9 @@ __**Yeni {MUSIC_BOT_NAME} Küresel Yasaklaması**__
 async def unban_globally(_, message):
     if not message.reply_to_message:
         if len(message.command) != 2:
-            await message.reply_text("**Kullanım:**\n/ungban [Kullanıcı Adı | Kullanıcı ID]")
+            await message.reply_text(
+                "**Kullanım:**\n/ungban [Kullanıcı Adı | Kullanıcı ID]"
+            )
             return
         user = message.text.split(None, 1)[1]
         if "@" in user:
@@ -349,13 +369,19 @@ async def unban_globally(_, message):
         if user.id == from_user.id:
             await message.reply_text("Bu İşlemi Kendin İçin Kullanamazsın!")
         elif user.id == BOT_ID:
-            await message.reply_text("Zaten Kendimi Yasaklamam Mümkün Değilken Yasağımı Kaldırmaya Çalışma.")
+            await message.reply_text(
+                "Zaten Kendimi Yasaklamam Mümkün Değilken Yasağımı Kaldırmaya Çalışma."
+            )
         elif user.id in sudoers:
-            await message.reply_text("Kurucuları Yasaklayamaz Veya Yasağını Kaldıramazsınız!")
+            await message.reply_text(
+                "Kurucuları Yasaklayamaz Veya Yasağını Kaldıramazsınız!"
+            )
         else:
             is_gbanned = await is_gbanned_user(user.id)
             if not is_gbanned:
-                await message.reply_text("Kullanıcı Zaten özgür, neden ona zorbalık ediyorsun?")
+                await message.reply_text(
+                    "Kullanıcı Zaten özgür, neden ona zorbalık ediyorsun?"
+                )
             else:
                 await remove_gban_user(user.id)
                 await message.reply_text(f"Küresel Yasaklama Kaldırıldı!")
@@ -367,13 +393,19 @@ async def unban_globally(_, message):
     if user_id == from_user_id:
         await message.reply_text("Bu İşlemi Kendin İçin Kullanamazsın.")
     elif user_id == BOT_ID:
-        await message.reply_text("Zaten Kendimi Yasaklamam Mümkün Değilken Yasağımı Kaldırmaya Çalışma.")
+        await message.reply_text(
+            "Zaten Kendimi Yasaklamam Mümkün Değilken Yasağımı Kaldırmaya Çalışma."
+        )
     elif user_id in sudoers:
-        await message.reply_text("Kurucuları Yasaklayamaz Veya Yasağını Kaldıramazsınız!")
+        await message.reply_text(
+            "Kurucuları Yasaklayamaz Veya Yasağını Kaldıramazsınız!"
+        )
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if not is_gbanned:
-            await message.reply_text("Kullanıcı Zaten özgür, neden ona zorbalık ediyorsun?")
+            await message.reply_text(
+                "Kullanıcı Zaten özgür, neden ona zorbalık ediyorsun?"
+            )
         else:
             await remove_gban_user(user_id)
             await message.reply_text(f"Küresel Yasaklama Kaldırıldı!")

@@ -76,11 +76,11 @@ async def log_(client, message):
     if await is_heroku():
         if HEROKU_API_KEY == "" and HEROKU_APP_NAME == "":
             return await message.reply_text(
-               "<b>HEROKU UYGULAMASI ALGILANDI! </b>\n\nUygulamanızı güncellemek için, sırasıyla HEROKU_API_KEY ve HEROKU_APP_NAME değişkenlerini ayarlamanız gerekir!"
+                "<b>HEROKU UYGULAMASI ALGILANDI! </b>\n\nUygulamanızı güncellemek için, sırasıyla HEROKU_API_KEY ve HEROKU_APP_NAME değişkenlerini ayarlamanız gerekir!"
             )
         elif HEROKU_API_KEY == "" or HEROKU_APP_NAME == "":
             return await message.reply_text(
-             "<b>HEROKU UYGULAMASI ALGILANDI!</b> \n\n<b>Uzaktan güncelleme yapabilmek için her ikisini de</b> HEROKU_API_KEY **ve** HEROKU_APP_NAME <b>değişkenlerini doğru şekilde eklediğinizden emin olun!</b>"
+                "<b>HEROKU UYGULAMASI ALGILANDI!</b> \n\n<b>Uzaktan güncelleme yapabilmek için her ikisini de</b> HEROKU_API_KEY **ve** HEROKU_APP_NAME <b>değişkenlerini doğru şekilde eklediğinizden emin olun!</b>"
             )
     else:
         return await message.reply_text("Yalnızca Heroku Uygulamaları için")
@@ -96,9 +96,7 @@ async def log_(client, message):
         link = await paste_queue(data)
         url = link + "/index.txt"
         return await message.reply_text(
-            f"İşte Sizin Uygulamanızın Günlüğü[{HEROKU_APP_NAME}]"
-
-[Günlükleri kontrol etmek için burayı tıklayın]({url})"
+            f"İşte Sizin Uygulamanızın Günlüğü[{HEROKU_APP_NAME}] \n\n[Günlükleri kontrol etmek için burayı tıklayın]({url})"
         )
     else:
         return await message.reply_text(data)
@@ -148,7 +146,7 @@ async def varget_(client, message):
 
 @app.on_message(filters.command("del_var") & filters.user(SUDOERS))
 async def vardel_(client, message):
-    usage = "**Kullanım:**\n/del_var ["Var" İsmi]"
+    usage = "**Kullanım:**\n/del_var [Değişken İsmi]"
     if len(message.command) != 2:
         return await message.reply_text(usage)
     check_var = message.text.split(None, 2)[1]
@@ -166,12 +164,12 @@ async def vardel_(client, message):
             happ = Heroku.app(HEROKU_APP_NAME)
         except BaseException:
             return await message.reply_text(
-           "Lütfen Heroku API Anahtarınızın ve Uygulama adınızın heroku'da doğru şekilde yapılandırıldığından emin olun"
+                "Lütfen Heroku API Anahtarınızın ve Uygulama adınızın heroku'da doğru şekilde yapılandırıldığından emin olun"
             )
         heroku_config = happ.config()
         if check_var in heroku_config:
             await message.reply_text(
-                "**Heroku "Var" Silme ** \n\n{check_var} başarıyla silindi.""
+                "**Heroku Değişken Silme ** \n\n{check_var} başarıyla silindi."
             )
             del heroku_config[check_var]
         else:
@@ -210,7 +208,7 @@ async def set_var(client, message):
             happ = Heroku.app(HEROKU_APP_NAME)
         except BaseException:
             return await message.reply_text(
-               "Lütfen Heroku API Anahtarınızın ve Uygulama adınızın heroku'da doğru şekilde yapılandırıldığından emin olun."
+                "Lütfen Heroku API Anahtarınızın ve Uygulama adınızın heroku'da doğru şekilde yapılandırıldığından emin olun."
             )
         heroku_config = happ.config()
         if to_set in heroku_config:
@@ -219,7 +217,7 @@ async def set_var(client, message):
             )
         else:
             await message.reply_text(
-                f"{to _set} adlı Yeni değişken eklendi. \n\nBot Şimdi Yeniden Başlayacak."
+                f"{to_set} adlı Yeni değişken eklendi. \n\nBot Şimdi Yeniden Başlayacak."
             )
         heroku_config[to_set] = value
     else:
@@ -239,7 +237,6 @@ async def set_var(client, message):
 
 @app.on_message(filters.command("usage") & filters.user(SUDOERS))
 async def usage_dynos(client, message):
-    ### Credits CatUserbot
     if await is_heroku():
         if HEROKU_API_KEY == "" and HEROKU_APP_NAME == "":
             return await message.reply_text(
@@ -256,9 +253,11 @@ async def usage_dynos(client, message):
         Heroku.app(HEROKU_APP_NAME)
     except BaseException:
         return await message.reply_text(
-           "Lütfen Heroku API Anahtarınızın ve Uygulama adınızın heroku'da doğru yapılandırıldığından emin olun"
+            "Lütfen Heroku API Anahtarınızın ve Uygulama adınızın heroku'da doğru yapılandırıldığından emin olun"
         )
-    dyno = await message.reply_text("Heroku kullanımı kontrol ediliyor. Lütfen bekleyin...")
+    dyno = await message.reply_text(
+        "Heroku kullanımı kontrol ediliyor. Lütfen bekleyin..."
+    )
     account_id = Heroku.account().id
     useragent = (
         "Mozilla/5.0 (Linux; Android 10; SM-G975F) "
@@ -340,8 +339,6 @@ async def update_(client, message):
     for info in repo.iter_commits(f"HEAD..origin/{UPSTREAM_BRANCH}"):
         updates += f"<b>➣ #{info.count()}: [{info.summary}]({REPO_}/commit/{info}) by -> {info.author}</b>\n\t\t\t\t<b>➥ Commited on:</b> {ordinal(int(datetime.fromtimestamp(info.committed_date).strftime('%d')))} {datetime.fromtimestamp(info.committed_date).strftime('%b')}, {datetime.fromtimestamp(info.committed_date).strftime('%Y')}\n\n"
     _update_response_ = "Bot için yeni bir güncelleme mevcut! \n\n➣  </b>Güncellemeleri Şimdi Uygula! </code > \n\n**<u>Güncellemeler:</u>**"
-
-"
     _final_updates_ = _update_response_ + updates
     if len(_final_updates_) > 4096:
         link = await paste_queue(updates)

@@ -76,7 +76,7 @@ async def activevc(_, message: Message):
     if await is_active_chat(message.chat.id):
         mystic = await message.reply_text("Lütfen Bekleyiniz... Sıraya Alınıyor...")
         dur_left = db_mem[message.chat.id]["left"]
-        duration_min = db_mem[message.chat.id]["total"]
+        db_mem[message.chat.id]["total"]
         got_queue = get_queue.get(message.chat.id)
         if not got_queue:
             await mystic.edit(f"Sıra Boş")
@@ -216,7 +216,9 @@ async def basffy(_, message):
 @app.on_message(filters.command("botayril") & filters.user(SUDOERS))
 async def baaaf(_, message):
     if len(message.command) != 2:
-        await message.reply_text("**Kullanım:**\n/botayril [Sohbet Kullanıcı Adı Veya Sohbet ID'si]")
+        await message.reply_text(
+            "**Kullanım:**\n/botayril [Sohbet Kullanıcı Adı Veya Sohbet ID'si]"
+        )
         return
     chat = message.text.split(None, 2)[1]
     try:
@@ -231,7 +233,9 @@ async def baaaf(_, message):
 @app.on_message(filters.command("ayril") & filters.user(SUDOERS))
 async def baujaf(_, message):
     if len(message.command) != 2:
-        await message.reply_text("**Kullanım:**\n/ayril [Sohbet Kullanıcı Adı Veya Sohbet ID'si]")
+        await message.reply_text(
+            "**Kullanım:**\n/ayril [Sohbet Kullanıcı Adı Veya Sohbet ID'si]"
+        )
         return
     chat = message.text.split(None, 2)[1]
     try:

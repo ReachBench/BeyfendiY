@@ -135,7 +135,9 @@ async def get_formats(CallbackQuery, videoid, user_id, type):
                         text="⬅️  Geri Git",
                         callback_data=f"good {videoid}|{user_id}",
                     ),
-                    InlineKeyboardButton(text="🗑 Menüyü Kapat", callback_data=f"close2"),
+                    InlineKeyboardButton(
+                        text="🗑 Menüyü Kapat", callback_data=f"close2"
+                    ),
                 ],
             ]
         )
@@ -151,7 +153,9 @@ async def get_formats(CallbackQuery, videoid, user_id, type):
                         text="⬅️  Geri Git",
                         callback_data=f"good {videoid}|{user_id}",
                     ),
-                    InlineKeyboardButton(text="🗑 Menüyü Kapat", callback_data=f"close2"),
+                    InlineKeyboardButton(
+                        text="🗑 Menüyü Kapat", callback_data=f"close2"
+                    ),
                 ],
             ]
         )
@@ -170,7 +174,9 @@ async def get_formats(CallbackQuery, videoid, user_id, type):
                         text="⬅️  Geri Git",
                         callback_data=f"good {videoid}|{user_id}",
                     ),
-                    InlineKeyboardButton(text="🗑 Menüyü Kapat", callback_data=f"close2"),
+                    InlineKeyboardButton(
+                        text="🗑 Menüyü Kapat", callback_data=f"close2"
+                    ),
                 ],
             ]
         )
@@ -190,7 +196,9 @@ async def get_formats(CallbackQuery, videoid, user_id, type):
                         text="⬅️  Geri Git",
                         callback_data=f"good {videoid}|{user_id}",
                     ),
-                    InlineKeyboardButton(text="🗑 Menüyü Kapat", callback_data=f"close2"),
+                    InlineKeyboardButton(
+                        text="🗑 Menüyü Kapat", callback_data=f"close2"
+                    ),
                 ],
             ]
         )
@@ -213,7 +221,9 @@ async def get_formats(CallbackQuery, videoid, user_id, type):
                         text="⬅️  Geri Git",
                         callback_data=f"good {videoid}|{user_id}",
                     ),
-                    InlineKeyboardButton(text="🗑 Menüyü Kapat", callback_data=f"close2"),
+                    InlineKeyboardButton(
+                        text="🗑 Menüyü Kapat", callback_data=f"close2"
+                    ),
                 ],
             ]
         )
@@ -237,7 +247,9 @@ async def get_formats(CallbackQuery, videoid, user_id, type):
                         text="⬅️  Geri Git",
                         callback_data=f"good {videoid}|{user_id}",
                     ),
-                    InlineKeyboardButton(text="🗑 Menüyü Kapat", callback_data=f"close2"),
+                    InlineKeyboardButton(
+                        text="🗑 Menüyü Kapat", callback_data=f"close2"
+                    ),
                 ],
             ]
         )

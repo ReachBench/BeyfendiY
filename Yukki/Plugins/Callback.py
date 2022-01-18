@@ -218,9 +218,7 @@ async def admin_risghts(_, CallbackQuery):
                     final_output = await CallbackQuery.message.reply_photo(
                         photo="Utils/Telegram.JPEG",
                         reply_markup=InlineKeyboardMarkup(buttons),
-                        caption=(
-                            f"**Video Atlandı**\n\n👤**Talep Eden:** {mention}"
-                        ),
+                        caption=(f"**Video Atlandı**\n\n👤**Talep Eden:** {mention}"),
                     )
                     await mystic.delete()
                 else:
@@ -466,7 +464,9 @@ async def play_playlist(_, CallbackQuery):
                 os.remove(thumb)
         await mystic.delete()
         if for_p == 1:
-            m = await CallbackQuery.message.reply_text("Sıraya alınmış çalma listesi yapıştırılıyor.")
+            m = await CallbackQuery.message.reply_text(
+                "Sıraya alınmış çalma listesi yapıştırılıyor."
+            )
             link = await paste_queue(msg)
             preview = link + "/preview.png"
             url = link + "/index.txt"
@@ -583,7 +583,9 @@ async def check_playlist(_, CallbackQuery):
             duration = _note["duration"]
             msg += f"{j}- {title[:60]}\n"
             msg += f"    Süre- {duration} Dakika(lar)\n\n"
-        m = await CallbackQuery.message.reply_text("Sıraya alınmış çalma listesi yapıştırılıyor")
+        m = await CallbackQuery.message.reply_text(
+            "Sıraya alınmış çalma listesi yapıştırılıyor"
+        )
         link = await paste_queue(msg)
         preview = link + "/preview.png"
         url = link + "/index.txt"

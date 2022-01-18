@@ -70,7 +70,7 @@ async def welcome(_, message: Message):
             if member.id == BOT_ID:
                 if chat_id in await blacklisted_chats():
                     await message.reply_text(
-                        f"Sus, sohbetiniz [{mes sage.chat.title}] kara listeye alındı! \n\nHerhangi bir Kurucudan sohbetinizi beyaz listeye eklemesini isteyin"
+                        f"Sus, sohbetiniz [{message.chat.title}] kara listeye alındı! \n\nHerhangi bir Kurucudan sohbetinizi beyaz listeye eklemesini isteyin"
                     )
                     return await app.leave_chat(chat_id)
                 _assistant = await get_assistant(message.chat.id, "assistant")
@@ -101,7 +101,7 @@ async def welcome(_, message: Message):
                 )
             if member.id in SUDOERS:
                 return await message.reply_text(
-                    f"{MUSIC_BOT_NAME} adlı kullanıcının Kurucu Üyelerinden biri [{member . bahsetme}] sohbetinize az önce katıldı."
+                    f"{MUSIC_BOT_NAME} adlı kullanıcının Kurucu Üyelerinden biri [{member.mention}] sohbetinize az önce katıldı."
                 )
             return
         except:

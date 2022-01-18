@@ -664,7 +664,7 @@ async def playout_end(pytgclients, chat_id):
                     photo=thumb,
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=(
-                       f" 🎥 **Oynamaya Başlayan Parça**: [{title[:25]}](https://www.youtube.com/watch?v={afk}) \n👤**Talep Eden:** {mention}"
+                        f" 🎥 **Oynamaya Başlayan Parça**: [{title[:25]}](https://www.youtube.com/watch?v={afk}) \n👤**Talep Eden:** {mention}"
                     ),
                 )
                 os.remove(thumb)

@@ -68,7 +68,9 @@ async def awaiting_message(client, message):
 )
 async def pm_approve(client, message):
     if not message.reply_to_message:
-        return await eor(message, text="Onaylamak için bir kullanıcının mesajını yanıtlayın.")
+        return await eor(
+            message, text="Onaylamak için bir kullanıcının mesajını yanıtlayın."
+        )
     user_id = message.reply_to_message.from_user.id
     if await is_pmpermit_approved(user_id):
         return await eor(message, text="Kullanıcı zaten pm için onaylandı")
@@ -88,7 +90,9 @@ async def pm_approve(client, message):
 )
 async def pm_disapprove(client, message):
     if not message.reply_to_message:
-        return await eor(message, text="Onaylamamak için bir kullanıcının mesajını yanıtlayın.")
+        return await eor(
+            message, text="Onaylamamak için bir kullanıcının mesajını yanıtlayın."
+        )
     user_id = message.reply_to_message.from_user.id
     if not await is_pmpermit_approved(user_id):
         await eor(message, text="Kullanıcı pm için zaten onaylanmadı")
@@ -115,7 +119,9 @@ async def pm_disapprove(client, message):
 )
 async def block_user_func(client, message):
     if not message.reply_to_message:
-        return await eor(message, text="Engellemek için bir kullanıcının mesajını yanıtlayın. ")
+        return await eor(
+            message, text="Engellemek için bir kullanıcının mesajını yanıtlayın. "
+        )
     user_id = message.reply_to_message.from_user.id
     await eor(message, text="Kullanıcı Engellendi")
     await client.block_user(user_id)
@@ -133,7 +139,9 @@ async def block_user_func(client, message):
 )
 async def unblock_user_func(client, message):
     if not message.reply_to_message:
-        return await eor(message, text="Engeli kaldırmak için bir kullanıcının mesajını yanıtlayın. ")
+        return await eor(
+            message, text="Engeli kaldırmak için bir kullanıcının mesajını yanıtlayın. "
+        )
     user_id = message.reply_to_message.from_user.id
     await client.unblock_user(user_id)
     await eor(message, text="Kullanıcının engeli kaldırıldı")

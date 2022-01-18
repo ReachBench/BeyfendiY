@@ -177,7 +177,9 @@ async def start_video_stream(
         return
     else:
         if not await join_video_stream(CallbackQuery.message.chat.id, link, quality):
-            return await CallbackQuery.message.reply_text(f"Sesli sohbete katılma hatası.")
+            return await CallbackQuery.message.reply_text(
+                f"Sesli sohbete katılma hatası."
+            )
         get_queue[CallbackQuery.message.chat.id] = []
         got_queue = get_queue.get(CallbackQuery.message.chat.id)
         title = title

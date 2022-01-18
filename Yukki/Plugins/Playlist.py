@@ -1,19 +1,22 @@
 from pyrogram import filters
-from pyrogram.types import (InlineKeyboardButton, InlineKeyboardMarkup,
-                            KeyboardButton, Message, ReplyKeyboardMarkup,
-                            ReplyKeyboardRemove)
+from pyrogram.types import InlineKeyboardMarkup
 
-from Yukki import BOT_ID, BOT_USERNAME, MUSIC_BOT_NAME, SUDOERS, app, db_mem
-from Yukki.Database import (_get_playlists, delete_playlist, get_playlist,
-                            get_playlist_names, save_playlist)
+from Yukki import MUSIC_BOT_NAME, app, db_mem
+from Yukki.Database import delete_playlist, get_playlist, get_playlist_names
 from Yukki.Decorators.admins import AdminRightsCheck
 from Yukki.Decorators.assistant import AssistantAdd
-from Yukki.Decorators.checker import checker, checkerCB
+from Yukki.Decorators.checker import checker
 from Yukki.Decorators.permission import PermissionCheck
-from Yukki.Inline import (add_genre_markup, check_genre_markup, check_markup,
-                          delete_playlist_markuup, download_markup,
-                          others_markup, play_genre_playlist, playlist_markup,
-                          third_playlist_markup)
+from Yukki.Inline import (
+    add_genre_markup,
+    check_genre_markup,
+    check_markup,
+    delete_playlist_markuup,
+    others_markup,
+    play_genre_playlist,
+    playlist_markup,
+    third_playlist_markup,
+)
 
 __MODULE__ = "Çalma Listesi"
 __HELP__ = """
@@ -59,7 +62,7 @@ async def oynat_playlist_cmd(_, message):
                     user = await app.get_users(user)
                     userid = user.id
                     third_name = user.first_name
-                except Exception as e:
+                except Exception:
                     return await message.reply_text("Kullanıcı bulunamadı")
             user_id = message.from_user.id
             user_name = message.from_user.first_name
@@ -91,9 +94,7 @@ async def oynat_playlist_cmd(_, message):
         third_name = message.reply_to_message.from_user.first_name
         user_id = message.from_user.id
         user_name = message.from_user.first_name
-        buttons = third_playlist_markup(
-            user_name, user_id, third_name, userid, "abcd"
-        )
+        buttons = third_playlist_markup(user_name, user_id, third_name, userid, "abcd")
         hmo = await message.reply_photo(
             photo=thumb,
             caption=(
@@ -191,20 +192,15 @@ async def del_cmd(_, message):
     else:
         _playlist = await get_playlist_names(message.from_user.id, genre)
     if not _playlist:
-        await message.reply_text(
-            f"Oynatma Listeniz {MUSIC_BOT_NAME} sunucularında yok"
-        )
+        await message.reply_text(f"Oynatma Listeniz {MUSIC_BOT_NAME} sunucularında yok")
     else:
-        titlex = []
         j = 0
         count = int(count)
         for note in _playlist:
             j += 1
-            _note = await get_playlist(message.from_user.id, note, genre)
+            await get_playlist(message.from_user.id, note, genre)
             if j == count:
-                deleted = await delete_playlist(
-                    message.from_user.id, note, genre
-                )
+                deleted = await delete_playlist(message.from_user.id, note, genre)
                 if deleted:
                     return await message.reply_text(
                         f"**Çalma listesindeki {count} tane müzik silindi**"
@@ -239,16 +235,13 @@ async def delgroupplaylist(_, message):
     else:
         _playlist = await get_playlist_names(message.chat.id, genre)
     if not _playlist:
-        await message.reply_text(
-            f"Oynatma Listeniz {MUSIC_BOT_NAME} sunucularında yok"
-        )
+        await message.reply_text(f"Oynatma Listeniz {MUSIC_BOT_NAME} sunucularında yok")
     else:
-        titlex = []
         j = 0
         count = int(count)
         for note in _playlist:
             j += 1
-            _note = await get_playlist(message.chat.id, note, genre)
+            await get_playlist(message.chat.id, note, genre)
             if j == count:
                 deleted = await delete_playlist(message.chat.id, note, genre)
                 if deleted:
@@ -267,7 +260,7 @@ async def show_genre(_, CallbackQuery):
     await CallbackQuery.answer()
     callback_data = CallbackQuery.data.strip()
     callback_request = callback_data.split(None, 1)[1]
-    userid = CallbackQuery.from_user.id
+    CallbackQuery.from_user.id
     a, b, c = callback_request.split("|")
     buttons = play_genre_playlist(a, b, "abcd")
     await CallbackQuery.edit_message_reply_markup(
@@ -305,7 +298,7 @@ async def your_playlist(_, CallbackQuery):
     await CallbackQuery.answer()
     callback_data = CallbackQuery.data.strip()
     callback_request = callback_data.split(None, 1)[1]
-    userid = CallbackQuery.from_user.id
+    CallbackQuery.from_user.id
     videoid, user_id = callback_request.split("|")
     buttons = add_genre_markup(user_id, "Personal", videoid)
     await CallbackQuery.edit_message_reply_markup(
@@ -318,7 +311,7 @@ async def group_playlist(_, CallbackQuery):
     await CallbackQuery.answer()
     callback_data = CallbackQuery.data.strip()
     callback_request = callback_data.split(None, 1)[1]
-    userid = CallbackQuery.from_user.id
+    CallbackQuery.from_user.id
     videoid, user_id = callback_request.split("|")
     buttons = add_genre_markup(user_id, "Group", videoid)
     await CallbackQuery.edit_message_reply_markup(
@@ -331,7 +324,7 @@ async def otherhuvai(_, CallbackQuery):
     await CallbackQuery.answer()
     callback_data = CallbackQuery.data.strip()
     callback_request = callback_data.split(None, 1)[1]
-    userid = CallbackQuery.from_user.id
+    CallbackQuery.from_user.id
     videoid, user_id = callback_request.split("|")
     buttons = others_markup(videoid, user_id)
     db_mem[videoid]["check"] = 1
@@ -345,7 +338,7 @@ async def goback(_, CallbackQuery):
     await CallbackQuery.answer()
     callback_data = CallbackQuery.data.strip()
     callback_request = callback_data.split(None, 1)[1]
-    userid = CallbackQuery.from_user.id
+    CallbackQuery.from_user.id
     videoid, user_id = callback_request.split("|")
     buttons = others_markup(videoid, user_id)
     try:

@@ -66,5 +66,5 @@ async def theme_func(_, message):
     else:
         theme = _note["theme"]
     await message.reply_text(
-        f"****{MUSIC_BOT_NAME} Küçük Resimler Teması** \n\n**Mevcut Tema : -** {theme} \n\n**Kullanılabilir Temalar:-** {' | '.join(theme 2)} \n\nTemayı değiştirmek için /settheme komutunu kullanın."
+        f"****{MUSIC_BOT_NAME} Küçük Resimler Teması** \n\n**Mevcut Tema : -** {theme} \n\n**Kullanılabilir Temalar:-** {' | '.join(themes2)} \n\nTemayı değiştirmek için /settheme komutunu kullanın."
     )
