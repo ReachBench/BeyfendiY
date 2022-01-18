@@ -18,6 +18,7 @@ requests
 rich
 dnspython
 git+https://github.com/Andorex/andorex-y-dl
+git+https://github.com/Andorex/andorex-yt
 tgcrypto
 gitpython
 heroku3
