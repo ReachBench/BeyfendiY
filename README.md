@@ -1,1 +1,1 @@
-https://heroku.com/deploy?template={https://github.com/BirBeyfendi/BeyfendiY}
+https://heroku.com/deploy?template=https://github.com/BirBeyfendi/BeyfendiY
